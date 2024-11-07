@@ -3,6 +3,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 import { connectToDB } from "@utils/database";
+import User from "@models/user";
 
 const handler = NextAuth({
     providers: [
@@ -11,22 +12,40 @@ const handler = NextAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         })
     ],
+    callbacks: {
+           // Keep running existing session and update for user(s)
     async session({ session }) {
+        const sessionUser = await User.findOne({
+            email: session.user.email
+        })
 
+        session.user.id = sessionUser._id.toString();
+
+        return session;
     },
     async signIn({ profile }) {
         try {
             await connectToDB();
-            
-            // Check if a user already exists
-            // If not, create new user and store on DB
-
+            console.log("Database connection established in signIn");
+   
+            const userExists = await User.findOne({ email: profile.email });
+            console.log("User search completed");
+   
+            if (!userExists) {
+                await User.create({
+                    email: profile.email,
+                    username: profile.name.replace(" ", "").toLowerCase(),
+                    image: profile.picture
+                });
+                console.log("New user created in database");
+            }
+   
             return true; // Successful sign in
         } catch (error) {
-            console.log(error);
-            return false;
-            
+            console.error("Sign-in error:", error);
+            return false;           
         }
+    }
     }
 })
 
