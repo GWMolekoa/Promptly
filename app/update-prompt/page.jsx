@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState }from 'react'
-
-
-
 import Form from '@components/Form';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+import { Suspense } from 'react';
+
+// Fallback component for the Suspense boundary
+const Loading = () => <div>Loading...</div>;
 
 const EditPrompt = () => {
     const router = useRouter();
@@ -58,15 +60,17 @@ const EditPrompt = () => {
         }    
     }
 
-  return (
-    <Form 
-        type="Edit"
-        post={post}
-        setPost={setPost}
-        submitting={submitting}
-        handleSubmit={updatePrompt}
-    />
-  )
+    return (
+        <Suspense fallback={<Loading />}> {/* Wrapped the component with Suspense */}
+            <Form
+                type="Edit"
+                post={post}
+                setPost={setPost}
+                submitting={submitting}
+                handleSubmit={updatePrompt}
+            />
+        </Suspense>
+    );
 }
 
 export default EditPrompt
