@@ -7,7 +7,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         <span className="blue_gradient">{type} Post</span>
       </h1>
       <p className="desc text-left max-w-md">
-        Share Amazing Prompts With The World And Let Your Imagination 
+        {type} And Share Amazing Prompts With The World And Let Your Imagination 
         Run Wild With Any AI Powered Platform
       </p>
 
