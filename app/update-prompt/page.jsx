@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Form from '@components/Form';
 
+// Make the page dynamic
 const EditPrompt = () => {
     const router = useRouter();
     const searchParams = useSearchParams(); // Access search params
@@ -78,4 +80,4 @@ const EditPrompt = () => {
     );
 };
 
-export default EditPrompt;
+export default dynamic(() => Promise.resolve(EditPrompt), { ssr: false });
