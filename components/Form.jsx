@@ -15,10 +15,12 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         onSubmit={handleSubmit}
         className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
       >
-        <label>
+        <label htmlFor="prompt">
           <span className="font-satoshi font-semibold text-base text-gray-700">Your AI Prompt</span>
 
           <textarea 
+            id="prompt"
+            name="prompt"
             value={post.prompt}
             onChange={(e) => setPost({ ...post, prompt: e.target.value})}
             placeholder="Write Your Prompt Here.."
@@ -26,12 +28,14 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             className="form_textarea"
           />
         </label>
-        <label>
+        <label htmlFor="tag">
           <span className="font-satoshi font-semibold text-base text-gray-700">Tag {` `}
             <span>(#product, #webdevelopment, #idea)</span>
           </span>
 
           <input 
+            id="tag"
+            name="tag"
             value={post.tag}
             onChange={(e) => setPost({ ...post, tag: e.target.value})}
             placeholder="#tag"
